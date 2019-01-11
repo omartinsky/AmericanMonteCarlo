@@ -18,18 +18,10 @@ class PolynomialInterpolator:
         return vectorised(xa)
 
     @staticmethod
-    def CreateInterpolator(x, y, itm_mask, debug_plotting=False):
-        assert isinstance(debug_plotting, bool)
-
+    def CreateInterpolator(x, y, itm_mask):
         # filter out-of-money paths
         x_filtered = list(itertools.compress(x, itm_mask))
         y_filtered = list(itertools.compress(y, itm_mask))
 
         interpolator = PolynomialInterpolator(numpy.polyfit(x_filtered, y_filtered, 2))
-
-        if debug_plotting:
-            _linspace = numpy.linspace(min(x_filtered), max(x_filtered), 100)
-            pyplot.scatter(x, y, linestyle='-', marker='.', color='grey', s=1)
-            pyplot.plot(_linspace, interpolator.calc(_linspace), color='black'), pyplot.show()
-
         return interpolator

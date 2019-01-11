@@ -3,6 +3,7 @@
 
 from matplotlib import pyplot
 import numpy
+import itertools
 from amc import *
 
 
@@ -37,7 +38,7 @@ def plot_cashflows(cash_flow_matrix, path_generator, **kwargs):
     for iTime in range(count_times):
         t = path_generator.timeline.ndarray[iTime]
         cfmvalues, cfmtimes = cash_flow_matrix.find_next_cashflow(0)
-        cash_flow_slice = numpy.where(cfmtimes==t, cfmvalues, 0)
+        cash_flow_slice = numpy.where(cfmtimes == t, cfmvalues, 0)
         distribution_slice = path_generator.slices[iTime]
         for iPath in range(count_paths):
             payoff = cash_flow_slice[iPath]
@@ -45,3 +46,12 @@ def plot_cashflows(cash_flow_matrix, path_generator, **kwargs):
                 list_x.append(t)
                 list_y.append(distribution_slice[iPath])
     pyplot.scatter(list_x, list_y, **kwargs)
+
+
+def plot_regression(regression_data, t):
+    x, y, itm_mask = regression_data.data[t]
+    interpolator = PolynomialInterpolator.CreateInterpolator(x, y, itm_mask)
+    x_filtered = list(itertools.compress(x, itm_mask))
+    _linspace = numpy.linspace(min(x_filtered), max(x_filtered), 100)
+    pyplot.scatter(x, y, linestyle='-', marker='.', color='grey', s=1)
+    pyplot.plot(_linspace, interpolator.calc(_linspace), color='black', label='Regression at time t=%0.2f' % t)
