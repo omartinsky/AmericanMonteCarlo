@@ -84,7 +84,7 @@ class AmcSimulator:
             x = S_t
 
             if any(itm_mask):
-                interpolator = PolynomialInterpolator.CreateInterpolator(x, y, itm_mask)
+                interpolator = PolynomialInterpolator.CreateInterpolator(x, y, itm_mask, 2)
                 value_if_continued = interpolator.calc(x)
                 value_if_exercised = P_t
                 exercise_mask = value_if_exercised > value_if_continued

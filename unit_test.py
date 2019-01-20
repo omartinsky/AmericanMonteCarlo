@@ -7,23 +7,6 @@ from amc import *
 from logger import *
 from pathgenerator import *
 
-
-class TestPolynomialInterpolator(unittest.TestCase):
-    def test(self):
-        x = linspace(0, 10, 11)
-        y = x ** 2
-        pf = polyfit(x, y, deg=2)
-        pi = PolynomialInterpolator(pf)
-        self.assertAlmostEqual(pi._calc_number(2.), 4.)
-        self.assertAlmostEqual(pi._calc_number(3.), 9.)
-        self.assertAlmostEqual(pi._calc_number(4.), 16.)
-
-        y = pi.calc(numpy.array([2., 3., 4.]))
-        self.assertAlmostEqual(y[0], 4)
-        self.assertAlmostEqual(y[1], 9)
-        self.assertAlmostEqual(y[2], 16)
-
-
 def create_cash_flow_matrix():
     cfm = CashFlowMatrix(5)
     cfm.add(3, numpy.array([1, 2, 3, 4, 5]))
