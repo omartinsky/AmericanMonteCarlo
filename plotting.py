@@ -48,9 +48,9 @@ def plot_cashflows(cash_flow_matrix, path_generator, **kwargs):
     pyplot.scatter(list_x, list_y, **kwargs)
 
 
-def plot_regression(regression_data, t):
-    x, y, itm_mask = regression_data.data[t]
-    interpolator = PolynomialInterpolator.CreateInterpolator(x, y, itm_mask)
+def plot_regression(amc, t):
+    x, y, itm_mask = amc.regression_data.data[t]
+    interpolator = amc.interpolator_factory(x, y, itm_mask)
     x_filtered = list(itertools.compress(x, itm_mask))
     _linspace = numpy.linspace(min(x_filtered), max(x_filtered), 100)
     pyplot.scatter(x, y, linestyle='-', marker='.', color='grey', s=1)

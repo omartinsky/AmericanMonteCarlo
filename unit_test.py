@@ -62,7 +62,8 @@ class TestSimulator(unittest.TestCase):
         timeline = TimeLine([0., 1., 2., 3.])
         rf = 0.06
         logger = ConsoleLogger(LogLevel.ERROR)
-        sim = AmcSimulator(TestSimulator.Payoff(), PathGeneratorForTest(), timeline, rf, logger)
+        interpolator_factory = lambda x, y, itm_mask: PolynomialInterpolator.Create(x, y, itm_mask, 2)
+        sim = AmcSimulator(TestSimulator.Payoff(), PathGeneratorForTest(), timeline, rf, interpolator_factory, logger)
         sim.run()
         values, times = sim.cfm.find_next_cashflow(0)
         expected_values = [0., 0., 0.07, 0.17, 0., 0.34, 0.18, 0.22]
@@ -87,8 +88,9 @@ class TestSimulator2(unittest.TestCase):
         s0 = 1000
         random.seed(0)
         path_generator = LogNormalPathGenerator(timeline, path_count=10000, s0=s0, drift=rf, sigma=0.1)
+        interpolator_factory = lambda x, y, itm_mask : PolynomialInterpolator.Create(x, y, itm_mask, 2)
         payoff = TestSimulator2.Payoff()
-        sim = AmcSimulator(payoff, path_generator, timeline, rf, logger)
+        sim = AmcSimulator(payoff, path_generator, timeline, rf, interpolator_factory, logger)
         sim.run()
         npv = sim.cash_flow_matrix.calc_npv(rf)
         logger.info("NPV: %f" % npv)

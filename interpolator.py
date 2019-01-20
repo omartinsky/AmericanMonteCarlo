@@ -13,7 +13,7 @@ class ChebyshevInterpolator:
         return chebyshev.chebval(xa, self.params)
 
     @staticmethod
-    def CreateInterpolator(x, y, itm_mask, degree):
+    def Create(x, y, itm_mask, degree):
         # filter out-of-money paths
         x_filtered = list(itertools.compress(x, itm_mask))
         y_filtered = list(itertools.compress(y, itm_mask))
@@ -30,7 +30,7 @@ class PolynomialInterpolator:
         return polynomial.polyval(xa, self.params)
 
     @staticmethod
-    def CreateInterpolator(x, y, itm_mask, degree):
+    def Create(x, y, itm_mask, degree):
         # filter out-of-money paths
         x_filtered = list(itertools.compress(x, itm_mask))
         y_filtered = list(itertools.compress(y, itm_mask))

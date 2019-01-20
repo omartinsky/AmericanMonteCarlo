@@ -30,12 +30,14 @@ class RegressionData:
 
 
 class AmcSimulator:
-    def __init__(self, payoff_function, path_generator, timeline, rf, logger, store_regression_data=False):
+    def __init__(self, payoff_function, path_generator, timeline, rf, interpolator_factory, logger, store_regression_data=False):
         assert isinstance(payoff_function, PayoffBase)
         assert isinstance(path_generator, PathGeneratorBase)
         assert isinstance(timeline, TimeLine)
         assert isinstance(rf, float)
         assert isinstance(logger, LoggerBase)
+        assert callable(interpolator_factory)
+        self.interpolator_factory = interpolator_factory
         self.payoff_function = payoff_function
         self.path_generator = path_generator
         self.timeline = timeline
@@ -84,7 +86,7 @@ class AmcSimulator:
             x = S_t
 
             if any(itm_mask):
-                interpolator = PolynomialInterpolator.CreateInterpolator(x, y, itm_mask, 2)
+                interpolator = self.interpolator_factory(x, y, itm_mask)
                 value_if_continued = interpolator.calc(x)
                 value_if_exercised = P_t
                 exercise_mask = value_if_exercised > value_if_continued
