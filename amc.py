@@ -30,7 +30,8 @@ class RegressionData:
 
 
 class AmcSimulator:
-    def __init__(self, payoff_function, path_generator, timeline, rf, interpolator_factory, logger, store_regression_data=False):
+    def __init__(self, payoff_function, path_generator, timeline, rf, interpolator_factory, logger,
+                 store_regression_data=False):
         assert isinstance(payoff_function, PayoffBase)
         assert isinstance(path_generator, PathGeneratorBase)
         assert isinstance(timeline, TimeLine)
@@ -92,7 +93,7 @@ class AmcSimulator:
                 exercise_mask = value_if_exercised > value_if_continued
 
                 if self.regression_data:
-                    self.regression_data.data[t] = (x,y, itm_mask)
+                    self.regression_data.data[t] = (x, y, itm_mask)
 
                 self.logger.debug('Continuation', value_if_continued)
                 self.logger.debug('Exercise', value_if_exercised)

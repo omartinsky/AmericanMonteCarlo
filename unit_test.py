@@ -3,9 +3,13 @@
 
 import unittest
 
+from teamcity import is_running_under_teamcity
+from teamcity.unittestpy import TeamcityTestRunner
+
 from amc import *
 from logger import *
 from pathgenerator import *
+
 
 def create_cash_flow_matrix():
     cfm = CashFlowMatrix(5)
@@ -88,7 +92,7 @@ class TestSimulator2(unittest.TestCase):
         s0 = 1000
         random.seed(0)
         path_generator = LogNormalPathGenerator(timeline, path_count=10000, s0=s0, drift=rf, sigma=0.1)
-        interpolator_factory = lambda x, y, itm_mask : PolynomialInterpolator.Create(x, y, itm_mask, 2)
+        interpolator_factory = lambda x, y, itm_mask: PolynomialInterpolator.Create(x, y, itm_mask, 2)
         payoff = TestSimulator2.Payoff()
         sim = AmcSimulator(payoff, path_generator, timeline, rf, interpolator_factory, logger)
         sim.run()
@@ -98,4 +102,8 @@ class TestSimulator2(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    if is_running_under_teamcity():
+        runner = TeamcityTestRunner()
+    else:
+        runner = unittest.TextTestRunner()
+    unittest.main(testRunner=runner)

@@ -17,11 +17,11 @@ def display_dataframes(dataframes, nColumns=3):
     IPython.display.display(IPython.display.HTML(table.format(content="".join(rows))))
 
 
-def figsize(w, h):
+def figsize(w: int, h: int):
     pylab.rcParams['figure.figsize'] = w, h
 
 
-def linestyle(style, reset_color_counter=True):
+def linestyle(style, reset_color_counter:bool=True):
     pylab.rcParams['lines.linestyle'] = style
     if reset_color_counter:
         pylab.gca().set_prop_cycle(None)  # Reset Colors Counter

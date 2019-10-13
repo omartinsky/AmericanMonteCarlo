@@ -2,14 +2,14 @@
 # http://github.com/omartinsky/AmericanMonteCarlo
 
 from copy import deepcopy
+from typing import List
+
 import numpy
 from timeline import TimeLine
 
 
 class PathGeneratorBase:
-    def __init__(self, path_count, timeline):
-        assert isinstance(path_count, int)
-        assert isinstance(timeline, TimeLine)
+    def __init__(self, path_count: int, timeline: TimeLine):
         self.slices = list()
         self._path_count = path_count
         self.timeline = deepcopy(timeline)
@@ -26,8 +26,7 @@ class PathGeneratorBase:
     def path_count(self):
         return self._path_count
 
-    def calculate_quantiles(self, quantile_definitions):
-        assert isinstance(quantile_definitions, list)
+    def calculate_quantiles(self, quantile_definitions: List):
         output = list()
         for slice in self.get_slices():
             sortedslice = sorted(slice)
@@ -37,7 +36,11 @@ class PathGeneratorBase:
 
 
 class LogNormalPathGenerator(PathGeneratorBase):
-    def __init__(self, timeline, path_count, s0, drift, sigma):
+    def __init__(self, timeline: TimeLine,
+                 path_count: int,
+                 s0: float,
+                 drift: float,
+                 sigma: float):
         super().__init__(path_count, timeline)
         s = numpy.ones(path_count) * s0
         self.slices.append(numpy.copy(s))

@@ -3,6 +3,7 @@
 
 import datetime
 import json
+from typing import List
 import numpy
 
 fmtstr_datetime = "%Y-%m-%dT%H:%M:%S.%fZ"
@@ -11,8 +12,7 @@ token_datetime = "$datetime"
 token_date = "$date"
 
 
-def generate_symmetric_quantiles(listing):
-    assert isinstance(listing, list)
+def generate_symmetric_quantiles(listing: List):
     return listing + [0.5] + [1 - q for q in reversed(listing)]
 
 
